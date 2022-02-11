@@ -7,17 +7,19 @@
             <h3>&mdash; MENU &mdash;</menu>
             </h3>
         </div>
+        {% for i in product %}
         <div class="food-items">
-            <img src="{%static 'images/watch.jpg'%}" alt="">
+            <img src="{{i.product_image.url}}" alt="">
             <div class="details">
                 <div class="details-sub">
-                    <h5>Smoky hamburga</h5>
-                    <h5 class="price">$8</h5>
+                    <h5>{{i.name}}</h5>
+                    <h5 class="price">$ {{i.selling_price}}</h5>
                 </div>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ea tempora deserunt illum, odio pariatur ad nihil optio adipisci vitae magni? Consequuntur sit voluptatem tempora fugiat pariatur atque minima exercitationem natus?</p>
-                <button>Add To Cart</button>
+                <p>{{i.description}}</p>
+                <a href="products/{{i.id}}"><button id="butto">Add To Cart</button></a>
             </div>
         </div>
+        {% endfor %}
 
     </div>
 </body>

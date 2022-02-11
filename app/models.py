@@ -25,13 +25,11 @@ class Product(models.Model):
     category=models.ForeignKey("Category",on_delete=models.CASCADE)
     name = models.CharField( max_length=150, null=False, blank=False)
     product_image=models.ImageField(default='', null=True, blank=True)
-    customer_type = models.CharField( max_length=150, null=True, blank=False)
     description = models.TextField(max_length=500, null=False, blank=False)
     original_price = models.FloatField(null=False, blank=False)
     selling_price = models.FloatField(null=False, blank=False)
-    trending = models.BooleanField(default=False, help_text="0=defeault, 1=Hidden")
-    new_arrival= models.BooleanField(default=False, help_text="0=defeault, 1=Trending")
-    tag= models.CharField( max_length=150, null=False, blank=False)
+    Todays_detail = models.BooleanField(default=False, help_text="0=defeault, 1=Todays_detail")
+    All_time_special= models.BooleanField(default=False, help_text="0=defeault, 1=Trending")
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

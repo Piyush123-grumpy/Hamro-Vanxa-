@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %} {% load static %} {% block title %}Buy Now{% endblock title %} {% block main-content %}
+
+<body>
+    <div class="menu">
+        <div class="heading">
+            <h1>Hamro Vancha</h1>
+            <h3>&mdash; MENU &mdash;</menu>
+            </h3>
+        </div>
+        {% for i in product %}
+        <div class="food-items">
+            <img src="{{i.product_image.url}}" alt="">
+            <div class="details">
+                <div class="details-sub">
+                    <h5>{{i.name}}</h5>
+                    <h5 class="price">$ {{i.selling_price}}</h5>
+                </div>
+                <p>{{i.description}}</p>
+                <a href="products/{{i.id}}"><button id="butto">Add To Cart</button></a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</body>
+{% endblock main-content %}
