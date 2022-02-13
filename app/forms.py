@@ -1,7 +1,8 @@
+from unicodedata import category
 from django.contrib.auth.forms import UserCreationForm
 
 from phonenumber_field.phonenumber import PhoneNumber
-
+from app.models import *
 from account.models import Account
 from django import forms
 
@@ -18,3 +19,8 @@ class CustomUserForm(UserCreationForm):
     class Meta:
         model = Account
         fields = ['first_name','last_name','username','email','password1','password2','phone_number','state','city']
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = "__all__"

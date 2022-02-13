@@ -1,7 +1,8 @@
 from unicodedata import category
 from django.shortcuts import render,redirect
 from account.models import Account
-from .models import *
+from .models import * 
+from app.forms import *
 from django.db.models import Q
 from django.http import JsonResponse
 from django.contrib import messages
@@ -24,6 +25,18 @@ def admin_category(request):
 def admin_order(request):
     order=Order.objects.all()
     return render(request,'app/admin_order.html',{'order':order})
+def create(request):
+    print(request.FILES)
+    if(request.method=="POST"):
+        # bind data in form
+        form=CategoryForm(request.POST,request.FILES)
+        # save that binded data with representation of model i.e model=Customer
+        form.save()
+
+        return redirect('/customer/index')
+    else:
+        form=CategoryForm()
+        return render(request,'customer/create.html',{'form':form})
 def productview(request,myid):
     if request.user.is_authenticated:
         products=Product.objects.filter(id=myid)
