@@ -1,8 +1,10 @@
 from unicodedata import category
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from account.models import Account
 from .models import *
 from django.db.models import Q
 from django.http import JsonResponse
+from django.contrib import messages
 import json
 
 
@@ -10,15 +12,30 @@ def home(request):
     product=Product.objects.all()
     context={"product":product}
     return render(request, 'app/home.html',context)
-
+def admin_cart(request):
+    cart=Cart.objects.all()
+    return render(request,'app/admin_cart.html',{'cart':cart})
+def admin_product(request):
+    product=Product.objects.all()
+    return render(request,'app/admin_product.html',{'product':product})
+def admin_category(request):
+    category=Category.objects.all()
+    return render(request,'app/admin_category.html',{'category':category})
+def admin_order(request):
+    order=Order.objects.all()
+    return render(request,'app/admin_order.html',{'order':order})
 def productview(request,myid):
-    products=Product.objects.filter(id=myid)
-    product=Product.objects.get(id=myid)
-    print(products)
-    item_already_in_Cart=False
-    item_already_in_Cart=Cart.objects.filter(Q(product=product)& Q(user=request.user)).exists()
-    context={'products':products[0],'item_already_in_Cart':item_already_in_Cart}
-    return render(request, 'app/productdetail.html',context)
+    if request.user.is_authenticated:
+        products=Product.objects.filter(id=myid)
+        product=Product.objects.get(id=myid)
+        print(products)
+        item_already_in_Cart=False
+        item_already_in_Cart=Cart.objects.filter(Q(product=product)& Q(user=request.user)).exists()
+        context={'products':products[0],'item_already_in_Cart':item_already_in_Cart}
+        return render(request, 'app/productdetail.html',context)
+    else:
+        messages.warning(request,"You Have to Login First")
+        return redirect('loginpage')
 def update_item(request):
     data=json.loads(request.body)
     productId=data['productId']
@@ -26,23 +43,99 @@ def update_item(request):
     action=data['action']
     print('Action:',action)
     print('productId:',productId)
-    customer = request.user.customer
     product=Product.objects.get(id=productId)
-    
-    cart,created=Cart.objects.get_or_create(category=Category,product=Product)
+    user=request.user
+    cart,created=Cart.objects.get_or_create(user=user ,product=product)
     if action=='add':
-        cart.quantity=(cart.quantity + 1)
+        cart.product_qty=(cart.product_qty + 1)
     elif action=='remove':
-        cart.quantity = (cart.quantity - 1)
+        cart.product_qty = (cart.product_qty - 1)
     cart.save()
-    if cart.quantity<=0:
+    if cart.product_qty<=0:
         cart.delete()
     return JsonResponse('Item was added',safe=False)
 
-def add_to_cart(request):
+def cart(request):
+    if request.user.is_authenticated:
+        user=request.user
+        carts=Cart.objects.filter(user=user)
+        amount=0.0
+        
+        shipping_amount=70.0
+        total_amount=0.0
+        cart_product=[p for p in Cart.objects.all() if p.user==user ]
+        if cart_product:
+            for p in cart_product:
+                tempamount=(p.product_qty* p.product.selling_price)
+                amount+=tempamount
+                total_amount=amount+shipping_amount
+            return render(request,'app/cart.html',{"carts":carts,"total_amount":total_amount,"amount":amount})
+        else:
+            return render(request,'app/emptycart.html')
 
- return render(request, 'app/addtocart.html')
-
+    else:
+        return render(request,'app/emptycart.html')
+def plus_cart(request):
+    if request.method=='GET':
+        user=request.user
+        prod_id=request.GET['prod_id']
+        c=Cart.objects.get(Q(product=prod_id)& Q(user=request.user))
+        c.product_qty+=1
+        c.save()
+        amount=0.0
+        shipping_amount=70.0
+        total_amount=0.0
+        cart_product=[p for p in Cart.objects.all() if p.user==user ]
+        for p in cart_product:
+            tempamount=(p.product_qty * p.product.selling_price)
+            amount+=tempamount
+        data={
+            'quantity':c.product_qty,
+            'amount':amount,
+            'totalamount':amount + shipping_amount
+            }
+        return JsonResponse(data)
+def minus_cart(request):
+    if request.method=='GET':
+        user=request.user
+        prod_id=request.GET['prod_id']
+        c=Cart.objects.get(Q(product=prod_id)& Q(user=request.user))
+        c.product_qty-=1
+        if c.product_qty<=0:
+            c.delete()
+        else:
+            c.save()
+        amount=0.0
+        shipping_amount=70.0
+        total_amount=0.0
+        cart_product=[p for p in Cart.objects.all() if p.user==user ]
+        for p in cart_product:
+            tempamount=(p.product_qty * p.product.selling_price)
+            amount+=tempamount
+        data={
+            'quantity':c.product_qty,
+            'amount':amount,
+            'totalamount':amount + shipping_amount
+            }
+        return JsonResponse(data)
+def remove_cart(request):
+    if request.method=='GET':
+        user=request.user
+        prod_id=request.GET['prod_id']
+        c=Cart.objects.get(Q(product=prod_id)& Q(user=request.user))
+        c.delete()
+        amount=0.0
+        shipping_amount=70.0
+        total_amount=0.0
+        cart_product=[p for p in Cart.objects.all() if p.user==user ]
+        for p in cart_product:
+            tempamount=(p.product_qty * p.product.selling_price)
+            amount+=tempamount
+        data={
+            'amount':amount,
+            'totalamount':amount + shipping_amount
+            }
+        return JsonResponse(data)
 def buy_now(request):
  return render(request, 'app/buynow.html')
 
@@ -52,8 +145,17 @@ def profile(request):
 def address(request):
  return render(request, 'app/address.html')
 
-def orders(request):
- return render(request, 'app/orders.html')
+def order_placed(request):
+    user=request.user
+    cart=Cart.objects.filter(user=user)
+    for c in cart:
+        Order(user=user,product=c.product,product_qty=c.product_qty,status="Placed").save()
+        c.delete()
+    return redirect('orders')
+def order(request):
+    order=Order.objects.all()
+    user=request.user
+    return render(request,'app/orders.html',{'order':order,'user':user})
 
 def change_password(request):
  return render(request, 'app/changepassword.html')
@@ -63,27 +165,27 @@ def burger(request):
     context={"product":product}
     return render(request, 'app/burger.html',context)
 def pizza(request):
-    product=Product.objects.filter(category="8")
+    product=Product.objects.filter(category="3")
     context={"product":product}
     return render(request, 'app/pizza.html',context)
 def chicken(request):
-    product=Product.objects.filter(category="7")
+    product=Product.objects.filter(category="1")
     context={"product":product}
     return render(request, 'app/chicken.html',context)
 def momo(request):
-    product=Product.objects.filter(category="6")
+    product=Product.objects.filter(category="4")
     context={"product":product}
     return render(request, 'app/momo.html',context)
 def beer(request):
-    product=Product.objects.filter(category="2")
+    product=Product.objects.filter(category="6")
     context={"product":product}
     return render(request, 'app/beer.html',context)
 def alcohol(request):
-    product=Product.objects.filter(category="4")
+    product=Product.objects.filter(category="5")
     context={"product":product}
     return render(request, 'app/alcohol.html',context)
 def wine(request):
-    product=Product.objects.filter(category="5")
+    product=Product.objects.filter(category="7")
     context={"product":product}
     return render(request, 'app/wine.html',context)
 
@@ -94,4 +196,17 @@ def wine(request):
 #  return render(request, 'app/customerregistration.html')
 
 def checkout(request):
- return render(request, 'app/checkout.html')
+    user=request.user
+    add=Account.objects.all()
+    print(add)
+    cart_items=Cart.objects.filter(user=user)
+    amount=0.0
+    shipping_amount=70.0
+    total_amount=0.0
+    cart_product=[p for p in Cart.objects.all() if p.user==user ]
+    if cart_product:
+        for p in cart_product:
+            tempamount=(p.product_qty * p.product.selling_price)            
+            amount+=tempamount
+        total_amount=amount+shipping_amount
+    return render(request,'app/checkout.html',{'cart_items':cart_items, 'add':add,'total_amount':total_amount})

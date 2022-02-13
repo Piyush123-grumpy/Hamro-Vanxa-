@@ -1,21 +1,36 @@
-{% extends 'app/base.html' %}
-{% load static %}
-{% block title %}Buy Now{% endblock title %}
-{% block main-content %}
-<div class="container my-5">
- <div class="row">
- <h3>Welcome Sonam</h3>
-  <div class="col-sm-2 border-end">
-   <ul class="list-unstyled">
-    <li class="d-grid"><a href="{% url 'orders' %}" class="btn btn-primary">Orders</a></li>
-   </ul>
-  </div>
-  <div class="col-sm-9 offset-sm-1">
-   <div class="row">
-    <div class="col-sm-6">Order 1</div>
-    <div class="col-sm-6">Order 2</div>
-   </div>
-  </div>
- </div>
+{% extends 'app/base.html' %} {% load static %} {% block title %}Buy Now{% endblock title %} {% block main-content %}
+<style>
+    .img {
+        height: 100px;
+        width: 100px;
+    }
+</style>
+<div class="container " style="margin-top: 80px;">
+    <div class="row">
+
+        <div class="col-sm-2 border-end">
+            <ul class="list-unstyled">
+                <li class="d-grid"><a href="{% url 'orders' %}" class="btn btn-primary">Orders</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 offset-sm-1 border">
+            <h3> {{user.first_name}} {{user.last_name}}</h3>
+            <div class="row">
+
+                {% for i in order %}
+                <div class="col-sm-6 border" style="margin: 15px; padding-top: 10px; padding-right: 20px;">
+
+                    <h5>Order Name: {{i.product.name}}</h5>
+                    <div class="my-3 ">
+                        <label for="quantity ">Quantity:{{i.product_qty}}</label>
+                    </div>
+                    <p>Price : Rs. {{i.product.selling_price}}</p>
+                    <p>Status: {{i.status}}</p>
+                </div>
+                <div class="col-sm-1 border" style="margin: 10px; padding-left: 0px;"><img style="margin-right: 0;" class="img" src="{{i.product.product_image.url}}" alt=""></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock main-content %}

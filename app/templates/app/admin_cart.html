@@ -1,0 +1,55 @@
+{% extends 'app/adminbase.html' %}{% block title %} cool {% endblock %}{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-dark" style="height: 100vh; padding: 0%; ">
+            <div class="opt">
+                <a href="{% url 'admin_cart' %}" class="a">
+                    <H5 class="bg-light border-bottom border-top border-light options text-dark my-0">Carts</H5>
+                </a>
+                <a href="{% url 'admin_category' %}" class="a">
+                    <H5 class="border-bottom border-light options text-light my-0">Category</H5>
+                </a>
+                <a href="{% url 'admin_order' %}" class="a">
+                    <H5 class="border-bottom border-light options text-light my-0">Order</H5>
+                </a>
+                <a href="{% url 'admin_product' %}" class="a">
+                    <H5 class="border-bottom border-light options text-light my-0">Product</H5>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-10">
+
+            <div class="heading">
+                <h1>Hamro Vancha</h1>
+            </div>
+            <div class="heading">
+                <h3> Admin Panel
+                </h3>
+            </div>
+
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Product Quantity</th>
+                    </tr>
+                </thead>
+                {% for i in cart %}
+                <tbody>
+
+                    <tr>
+                        <td>{{i.user}}</td>
+                        <td>{{i.product}}</td>
+                        <td>{{i.product_qty}}</td>
+                    </tr>
+
+                </tbody>
+                {% endfor %}
+            </table>
+
+
+        </div>
+    </div>
+</div>{% endblock content %}
