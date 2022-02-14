@@ -27,6 +27,11 @@
                 <h3> Admin Panel
                 </h3>
             </div>
+            <div style="display:flex;justify-content:flex-end;">
+                <div style="margin-bottom:10px">
+                    <a href="/admin_cart_add"><button type="button" class="btn btn-success">Add</button></a>
+                </div>
+            </div>
             <div class="scroll">
                 <table class="table table-fixed table-wrapper-scroll-y my-custom-scrollbar">
                     <thead class="thead-dark">
@@ -45,7 +50,7 @@
                             <td>{{i.user}}</td>
                             <td>{{i.product}}</td>
                             <td>{{i.product_qty}}</td>
-                            <td><a href="admin_cart_edit/{{i.id}}"><button type="button" class="btn btn-secondary">Edit</button></a> <a href=""><button type="button" class="btn btn-danger">Delete</button></a></td>
+                            <td><a href="admin_cart_edit/{{i.id}}"><button type="button" class="btn btn-secondary">Edit</button></a> <a href="/admin_cart_delete/{{i.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
 
                         </tr>
 
@@ -53,9 +58,6 @@
                     {% endfor %}
                 </table>
             </div>
-            <button type="button" class="btn btn-success">Add</button>
-            <button type="button" class="btn btn-danger">Danger</button>
-            <button type="button" class="btn btn-secondary">Secondary</button>
         </div>
 
     </div>

@@ -28,6 +28,11 @@
                 <h3> Admin Panel
                 </h3>
             </div>
+            <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+                <div>
+                    <a href="/admin_category_add/"> <button type="button" class="btn btn-success">Add</button></a>
+                </div>
+            </div>
             <div class="scroll">
                 <table class="table table-wrapper-scroll-y my-custom-scrollbar">
                     <thead class="thead-dark">
@@ -44,7 +49,7 @@
                             <td>{{i.name}}</td>
                             <td>{{i.image}}</td>
                             <td style="word-break: break-all;">{{i.description}}</td>
-                            <td><a href="/admin_category_edit/{{i.id}}"><button type="button" class="btn btn-secondary">Edit</button></a> <a href=""><button type="button" class="btn btn-danger">Delete</button></td></a>
+                            <td><a href="/admin_category_edit/{{i.id}}"><button type="button" class="btn btn-secondary">Edit</button></a> <a href="/admin_category_delete/{{i.id}}"><button type="button" class="btn btn-danger">Delete</button></td></a>
                         </tr>
                     </tbody>
                     {% endfor %}

@@ -27,6 +27,11 @@
                 <h3> Admin Panel
                 </h3>
             </div>
+            <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+                <div>
+                    <a href="/admin_product_add/"> <button type="button" class="btn btn-success">Add</button></a>
+                </div>
+            </div>
             <div class="scroll">
                 <table class="table ">
                     <thead class="thead-dark">
@@ -54,7 +59,7 @@
                             <td>{{i.selling_price}}</td>
                             <td>{{i.Todays_detail}}</td>
                             <td>{{i.All_time_special}}</td>
-                            <td><a href="/admin_product_edit/{{i.id}}"><button type="button" style="width: 70px;margin-bottom: 10px;" class="btn btn-secondary">Edit</button></a> <a href=""><button type="button" class="btn btn-danger">Delete</button></a></td>
+                            <td><a href="/admin_product_edit/{{i.id}}"><button type="button" style="width: 70px;margin-bottom: 10px;" class="btn btn-secondary">Edit</button></a> <a href="/admin_product_delete/{{i.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
                         </tr>
                     </tbody>
                     {% endfor %}

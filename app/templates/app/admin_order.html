@@ -28,6 +28,11 @@
                 <h3> Admin Panel
                 </h3>
             </div>
+            <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+                <div>
+                    <a href="/admin_order_add/"> <button type="button" class="btn btn-success">Add</button></a>
+                </div>
+            </div>
             <div class="scroll">
                 <table class="table">
                     <thead class="thead-dark">
@@ -46,7 +51,7 @@
                             <td>{{i.product}}</td>
                             <td>{{i.product_qty}}</td>
                             <td>{{i.status}}</td>
-                            <td><a href="/admin_order_edit/{{i.id}}"><button type="button" class="btn btn-secondary">Edit</button></a> <a href=""><button type="button" class="btn btn-danger">Delete</button></a></td>
+                            <td><a href="/admin_order_edit/{{i.id}}"><button type="button" class="btn btn-secondary">Edit</button></a> <a href="/admin_order_delete/{{i.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
 
                         </tr>
                     </tbody>
