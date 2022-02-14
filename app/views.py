@@ -1,6 +1,7 @@
 from unicodedata import category
 from django.shortcuts import render,redirect
 from account.models import Account
+from django.contrib.auth.models import User 
 from .models import * 
 from app.forms import *
 from django.db.models import Q
@@ -16,6 +17,77 @@ def home(request):
 def admin_cart(request):
     cart=Cart.objects.all()
     return render(request,'app/admin_cart.html',{'cart':cart})
+def admin_cart_edit(request,cart_id):
+    cart=Cart.objects.get(id=cart_id)
+    user=Account.objects.all()
+    product=Product.objects.all()
+    
+    if(request.method=="POST"):
+        print(request.POST)
+        form=CartForm(request.POST,instance=cart)
+
+        if form.is_valid():
+            print("valid")
+            form.save()
+        else:
+            print("invalid")
+
+        return redirect('/admin_cart/')
+    else:
+        return render(request,'app/edit.html',{'cart':cart,'user':user,'product':product})
+def admin_category_edit(request,category_id):
+    category=Category.objects.get(id=category_id)
+    
+    if(request.method=="POST"):
+        print(request.POST)
+        form=CategoryForm(request.POST,instance=category)
+
+        if form.is_valid():
+            print("valid")
+            form.save()
+        else:
+            print("invalid")
+
+        return redirect('/admin_cart/')
+    else:
+        return render(request,'app/category_edit.html',{'category':category})
+def admin_order_edit(request,order_id):
+    order=Order.objects.get(id=order_id)
+    user=Account.objects.all()
+    product=Product.objects.all()
+    
+    if(request.method=="POST"):
+        print(request.POST)
+        form=OrderForm(request.POST,instance=order)
+
+        if form.is_valid():
+            print("valid")
+            form.save()
+        else:
+            print("invalid")
+
+        return redirect('/admin_cart/')
+    else:
+        return render(request,'app/order_edit.html',{'order':order,'user':user,'product':product})
+def admin_product_edit(request,product_id):
+    product=Product.objects.get(id=product_id)
+    category=Category.objects.all()
+    
+    if(request.method=="POST"):
+        print(request.POST)
+        
+        form=ProductForm(request.POST,instance=product)
+
+        if form.is_valid():
+            print("valid")
+            form.save()
+        else:
+            print("invalid")
+
+        return redirect('/admin_cart/')
+    else:
+        return render(request,'app/product_edit.html',{'category':category,'product':product})
+    
 def admin_product(request):
     product=Product.objects.all()
     return render(request,'app/admin_product.html',{'product':product})
@@ -25,18 +97,18 @@ def admin_category(request):
 def admin_order(request):
     order=Order.objects.all()
     return render(request,'app/admin_order.html',{'order':order})
-def create(request):
-    print(request.FILES)
-    if(request.method=="POST"):
-        # bind data in form
-        form=CategoryForm(request.POST,request.FILES)
-        # save that binded data with representation of model i.e model=Customer
-        form.save()
+# def create(request):
+#     print(request.FILES)
+#     if(request.method=="POST"):
+#         # bind data in form
+#         form=CategoryForm(request.POST,request.FILES)
+#         # save that binded data with representation of model i.e model=Customer
+#         form.save()
 
-        return redirect('/customer/index')
-    else:
-        form=CategoryForm()
-        return render(request,'customer/create.html',{'form':form})
+#         return redirect('/customer/index')
+#     else:
+#         form=CategoryForm()
+#         return render(request,'customer/create.html',{'form':form})
 def productview(request,myid):
     if request.user.is_authenticated:
         products=Product.objects.filter(id=myid)

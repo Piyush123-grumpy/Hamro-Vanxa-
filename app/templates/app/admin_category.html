@@ -29,24 +29,26 @@
                 </h3>
             </div>
             <div class="scroll">
-            <table class="table table-wrapper-scroll-y my-custom-scrollbar">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Description</th>
-                    </tr>
-                </thead>
-                {% for i in category %}
-                <tbody>
-                    <tr>
-                        <td>{{i.name}}</td>
-                        <td>{{i.image}}</td>
-                        <td style="word-break: break-all;">{{i.description}}</td>
-                    </tr>
-                </tbody>
-                {% endfor %}
-            </table>
+                <table class="table table-wrapper-scroll-y my-custom-scrollbar">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    {% for i in category %}
+                    <tbody>
+                        <tr>
+                            <td>{{i.name}}</td>
+                            <td>{{i.image}}</td>
+                            <td style="word-break: break-all;">{{i.description}}</td>
+                            <td><a href="/admin_category_edit/{{i.id}}"><button type="button" class="btn btn-secondary">Edit</button></a> <a href=""><button type="button" class="btn btn-danger">Delete</button></td></a>
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
             </div>
 
         </div>

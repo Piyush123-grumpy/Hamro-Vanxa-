@@ -28,28 +28,35 @@
                 </h3>
             </div>
             <div class="scroll">
-            <table class="table table-fixed table-wrapper-scroll-y my-custom-scrollbar">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">User</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Product Quantity</th>
-                    </tr>
-                </thead>
-                {% for i in cart %}
-                <tbody>
+                <table class="table table-fixed table-wrapper-scroll-y my-custom-scrollbar">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Product Quantity</th>
+                            <th scope="col">Action</th>
 
-                    <tr>
-                        <td>{{i.user}}</td>
-                        <td>{{i.product}}</td>
-                        <td>{{i.product_qty}}</td>
-                    </tr>
+                        </tr>
+                    </thead>
+                    {% for i in cart %}
+                    <tbody>
 
-                </tbody>
-                {% endfor %}
-            </table>
+                        <tr>
+                            <td>{{i.user}}</td>
+                            <td>{{i.product}}</td>
+                            <td>{{i.product_qty}}</td>
+                            <td><a href="admin_cart_edit/{{i.id}}"><button type="button" class="btn btn-secondary">Edit</button></a> <a href=""><button type="button" class="btn btn-danger">Delete</button></a></td>
+
+                        </tr>
+
+                    </tbody>
+                    {% endfor %}
+                </table>
             </div>
-
+            <button type="button" class="btn btn-success">Add</button>
+            <button type="button" class="btn btn-danger">Danger</button>
+            <button type="button" class="btn btn-secondary">Secondary</button>
         </div>
+
     </div>
 </div>{% endblock content %}

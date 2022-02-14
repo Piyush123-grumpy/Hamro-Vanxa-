@@ -28,34 +28,37 @@
                 </h3>
             </div>
             <div class="scroll">
-            <table class="table ">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Original Price</th>
-                        <th scope="col">Selling Price</th>
-                        <th scope="col">Today's special</th>
-                        <th scope="col">All Time special</th>
-                    </tr>
-                </thead>
-                {% for i in product %}
-                <tbody>
-                    <tr>
-                        <td>{{i.category}}</td>
-                        <td>{{i.name}}</td>
-                        <td>{{i.product_image}}</td>
-                        <td style="word-break: break-all;">{{i.description}}</td>
-                        <td>{{i.original_price}}</td>
-                        <td>{{i.selling_price}}</td>
-                        <td>{{i.Todays_detail}}</td>
-                        <td>{{i.All_time_special}}</td>
-                    </tr>
-                </tbody>
-                {% endfor %}
-            </table>
+                <table class="table ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Category</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Original Price</th>
+                            <th scope="col">Selling Price</th>
+                            <th scope="col">Today's special</th>
+                            <th scope="col">All Time special</th>
+                            <th scope="col">Action</th>
+
+                        </tr>
+                    </thead>
+                    {% for i in product %}
+                    <tbody>
+                        <tr>
+                            <td>{{i.category}}</td>
+                            <td>{{i.name}}</td>
+                            <td>{{i.product_image}}</td>
+                            <td style="word-break: break-all;">{{i.description}}</td>
+                            <td>{{i.original_price}}</td>
+                            <td>{{i.selling_price}}</td>
+                            <td>{{i.Todays_detail}}</td>
+                            <td>{{i.All_time_special}}</td>
+                            <td><a href="/admin_product_edit/{{i.id}}"><button type="button" style="width: 70px;margin-bottom: 10px;" class="btn btn-secondary">Edit</button></a> <a href=""><button type="button" class="btn btn-danger">Delete</button></a></td>
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
             </div>
 
         </div>

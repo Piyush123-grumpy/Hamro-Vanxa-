@@ -29,26 +29,29 @@
                 </h3>
             </div>
             <div class="scroll">
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">User</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Product Quantity</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                {% for i in order %}
-                <tbody>
-                    <tr>
-                        <td>{{i.user}}</td>
-                        <td>{{i.product}}</td>
-                        <td>{{i.product_qty}}</td>
-                        <td>{{i.status}}</td>
-                    </tr>
-                </tbody>
-                {% endfor %}
-            </table>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Product Quantity</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    {% for i in order %}
+                    <tbody>
+                        <tr>
+                            <td>{{i.user}}</td>
+                            <td>{{i.product}}</td>
+                            <td>{{i.product_qty}}</td>
+                            <td>{{i.status}}</td>
+                            <td><a href="/admin_order_edit/{{i.id}}"><button type="button" class="btn btn-secondary">Edit</button></a> <a href=""><button type="button" class="btn btn-danger">Delete</button></a></td>
+
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
             </div>
 
 

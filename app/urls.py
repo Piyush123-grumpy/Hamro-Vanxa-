@@ -36,4 +36,9 @@ urlpatterns = [
     path('admin_category/',views.admin_category,name="admin_category"),
     path('admin_order/',views.admin_order,name="admin_order"),
     path('admin_product/',views.admin_product,name="admin_product"),
+    path('admin_cart/admin_cart_edit/<int:cart_id>',views.admin_cart_edit,name="admin_cart_edit"),
+    path('admin_category_edit/<int:category_id>',views.admin_category_edit,name="cer"),
+    path('admin_order_edit/<int:order_id>',views.admin_order_edit,name="cer"),
+    path('admin_product_edit/<int:product_id>',views.admin_product_edit,name="cer"),
+    
 ]

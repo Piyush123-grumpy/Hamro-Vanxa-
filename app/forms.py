@@ -20,7 +20,20 @@ class CustomUserForm(UserCreationForm):
         model = Account
         fields = ['first_name','last_name','username','email','password1','password2','phone_number','state','city']
 
+class CartForm(forms.ModelForm):
+    class Meta:
+        model = Cart
+        fields = ['user','product','product_qty']
+
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
+        fields = "__all__"
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = "__all__"
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
         fields = "__all__"

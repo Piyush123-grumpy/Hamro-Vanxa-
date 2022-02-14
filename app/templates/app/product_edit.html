@@ -1,0 +1,48 @@
+{% extends 'app/adminbase.html' %} {% block content %}
+<div class="col-lg-6 mt-4">
+    <h1 class="text-primary">Customer Form</h1>
+    <form action="/admin_product_edit/{{product.id}}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" value="{{product.name}}" name="name" class="form-control" />
+
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <select name="category" id="">
+                {% for i in category %}
+                <option value="{{i.id}}">{{i.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <input type="text" value="{{product.description}}" name="description" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Original Price</label>
+            <input type="number" value="{{product.original_price}}" name="original_price" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Selling Price</label>
+            <input type="number" value="{{product.selling_price}}" name="selling_price" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="vehicle1"> Trending</label>
+            <input type="checkbox" id="vehicle1" name="Todays_detail" value="True">
+
+        </div>
+        <div class="form-group">
+            <label for="vehicle1"> All time Selling</label>
+            <input type="checkbox" id="vehicle1" name="All_time_special" value="True">
+
+        </div>
+        <div class="form-group mt-4">
+            <input class="btn btn-primary" type="submit" value="update" />
+            <a href="/customer/index">Back</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
