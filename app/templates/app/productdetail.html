@@ -1,0 +1,22 @@
+{% extends 'app/base.html' %} {% load static %} {% block title %}Product Detail{% endblock title %} {% block main-content %}
+<div class="container" style="margin-top:90px">
+    <div class="row">
+        <div class="col-sm-6 text-center align-self-center">
+            <img src="{{products.product_image.url}}" alt="" class="img-fluid img-thumbnail">
+        </div>
+        <div class="col-sm-5 offset-sm-1">
+            <h2>{{products.name}}</h2>
+            <hr>
+            <p>{{products.description}}</p> <br>
+            <h4>Rs. {{products.selling_price}} <small class="fw-light text-decoration-line-through">Rs. {{products.original_price}}</small></h4> <br>
+            <a href="" class="btn btn-primary shadow px-5 py-2 update-cart" data-product={{products.id}} data-category={{products.category}} data-action="add"> Add to Cart</a>
+            <a href="/buy/{{products.id}}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
+            <h5 class="mt-5">Available Offers</h5>
+            <ul>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat beatae eius, ad nesciunt suscipit sed. Dolor architecto enim soluta eos optio saepe. Nostrum unde numquam impedit cumque veritatis temporibus nulla.</li>
+                Card</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock main-content %}

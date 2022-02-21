@@ -1,0 +1,35 @@
+{% extends 'app/base.html' %} {% load static %} {% block title %}Login{% endblock title %} {% block main-content %} {% for message in messages %}
+<div class="alert alert-{{message.tags}} alert-dismissible fade show" style="margin-top: 50px;" role="alert">
+    <strong>Message: </strong> {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+<div class="container" style="margin-top: 50px;">
+    <div class="row justify-content-center ">
+        <div class="col-md-6 ">
+            <div class=" ">
+                <div class="card mt-3 shadow " style="margin: 40px; ">
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="text-center ">
+                                <h4>Login</h4>
+                            </div>
+                            <div class="form-group ">
+                                <label for=" ">Username :</label>
+                                <input type="text" class="form-control" name="username" placeholder="Enter Username" id=" ">
+                            </div>
+                            <div class="form-group ">
+                                <label for=" ">Password :</label>
+                                <input type="password" class="form-control " name="password" placeholder="Enter Password ">
+                            </div>
+                            <button type="submit" class="btn float-end shadow btn-success px-4 ">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main-content %}
