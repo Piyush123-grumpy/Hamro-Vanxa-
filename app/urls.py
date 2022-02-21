@@ -2,10 +2,10 @@ from django.urls import path
 from app import views
 from app.controller import authview
 urlpatterns = [
-     path('', views.home),
+     path('', views.home,name='home'),
     #  path('product-detail/', views.product_detail, name='product-detail'),
     path('cart/', views.cart, name='cart'),
-    path('buy/', views.buy_now, name='buy-now'),
+    path('buy/<int:buy_id>', views.buy_now, name='buy-now'),
     path('profile/', views.profile, name='profile'),
     path('address/', views.address, name='address'),
     path('orders/', views.order, name='orders'),
@@ -31,6 +31,7 @@ urlpatterns = [
     path('plus_cart/', views.plus_cart),
     path('minus_cart/', views.minus_cart),
     path('remove_cart/', views.remove_cart),
+    path('search/',views.search,name="search"),
     # path('custom_admin',views.custom_admin,name="custom_admin"),
     path('admin_cart/',views.admin_cart,name="admin_cart"),
     path('admin_category/',views.admin_category,name="admin_category"),

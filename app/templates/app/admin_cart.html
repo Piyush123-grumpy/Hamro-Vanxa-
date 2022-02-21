@@ -38,6 +38,7 @@
                         <tr>
                             <th scope="col">User</th>
                             <th scope="col">Product</th>
+                            <th scope="col">Image</th>
                             <th scope="col">Product Quantity</th>
                             <th scope="col">Action</th>
 
@@ -49,6 +50,7 @@
                         <tr>
                             <td>{{i.user}}</td>
                             <td>{{i.product}}</td>
+                            <td><img src="{{i.product.product_image.url}}" alt="Girl in a jacket" width="100" height="100"></td>
                             <td>{{i.product_qty}}</td>
                             <td><a href="admin_cart_edit/{{i.id}}"><button type="button" class="btn btn-secondary">Edit</button></a> <a href="/admin_cart_delete/{{i.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
 

@@ -79,8 +79,8 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form action="{% url 'search' %}" method='GET' class="d-flex">
+                    <input name='q' class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-warning" type="submit">S</button>
                 </form>
                 <div>
@@ -91,14 +91,14 @@
                 {{user.username}}
               </a>
                             <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                                <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                               
                                 <li><a class="dropdown-item" href="{% url 'orders' %}">Orders</a></li>
-                                <li><a class="dropdown-item" href="{% url 'changepassword' %}">Change Password</a></li>
+                                
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mx-2">
-                            <a href="{% url 'cart' %}" class="nav-link text-white"><span class="badge bg-danger">4</span> Cart </a>
+                            <a href="{% url 'cart' %}" class="nav-link text-white"> Cart </a>
                         </li>
                         {% else %}
                         <li class="nav-item mx-2">

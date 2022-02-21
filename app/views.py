@@ -1,5 +1,6 @@
 from itertools import product
 from unicodedata import category
+from urllib import request
 from django.shortcuts import render,redirect
 from account.models import Account
 from django.contrib.auth.models import User 
@@ -16,170 +17,195 @@ def home(request):
     context={"product":product}
     return render(request, 'app/home.html',context)
 def admin_cart(request):
-    cart=Cart.objects.all()
-    return render(request,'app/admin_cart.html',{'cart':cart})
+    if request.user.is_authenticated:
+        if request.user.is_admin==True:
+            cart=Cart.objects.all()
+            return render(request,'app/admin_cart.html',{'cart':cart})
+    return render(request,'app/404.html')
 def admin_cart_edit(request,cart_id):
     cart=Cart.objects.get(id=cart_id)
     user=Account.objects.all()
     product=Product.objects.all()
-    
-    if(request.method=="POST"):
-        print(request.POST)
-        form=CartForm(request.POST,instance=cart)
+    if request.user.is_authenticated & request.user.is_admin==True:    
+        if(request.method=="POST"):
+            print(request.POST)
+            form=CartForm(request.POST,instance=cart)
 
-        if form.is_valid():
-            print("valid")
-            form.save()
+            if form.is_valid():
+                print("valid")
+                form.save()
+            else:
+                print("invalid")
+
+            return redirect('/admin_cart/')
         else:
-            print("invalid")
-
-        return redirect('/admin_cart/')
-    else:
-        return render(request,'app/edit.html',{'cart':cart,'user':user,'product':product})
+            return render(request,'app/edit.html',{'cart':cart,'user':user,'product':product})
+    return render(request,'app/404.html')
 def admin_cart_add(request):
     user=Account.objects.all()
     product=Product.objects.all()
-    
-    if(request.method=="POST"):
-        print(request.POST)
-        form=CartForm(request.POST)
+    if request.user.is_authenticated & request.user.is_admin==True: 
+        if(request.method=="POST"):
+            print(request.POST)
+            form=CartForm(request.POST,request.FILES)
 
-        if form.is_valid():
-            print("valid")
-            form.save()
+            if form.is_valid():
+                print("valid")
+                form.save()
+            else:
+                print("invalid")
+
+            return redirect('/admin_cart/')
         else:
-            print("invalid")
-
-        return redirect('/admin_cart/')
-    else:
-        return render(request,'app/cart_add.html',{'cart':cart,'user':user,'product':product})
+            return render(request,'app/cart_add.html',{'cart':cart,'user':user,'product':product})
+    return render(request,'app/404.html')
 def admin_category_edit(request,category_id):
     category=Category.objects.get(id=category_id)
-    
-    if(request.method=="POST"):
-        print(request.POST)
-        form=CategoryForm(request.POST,instance=category)
+    if request.user.is_authenticated & request.user.is_admin==True: 
+        if(request.method=="POST"):
+            print(request.POST)
+            form=CategoryForm(request.POST,request.FILES,instance=category)
 
-        if form.is_valid():
-            print("valid")
-            form.save()
+            if form.is_valid():
+                print("valid")
+                form.save()
+            else:
+                print("invalid")
+
+            return redirect('/admin_category/')
         else:
-            print("invalid")
-
-        return redirect('/admin_category/')
-    else:
-        return render(request,'app/category_edit.html',{'category':category})
+            return render(request,'app/category_edit.html',{'category':category})
+    return render(request,'app/404.html')
 def admin_category_add(request):
-    
-    if(request.method=="POST"):
-        print(request.POST)
-        form=CategoryForm(request.POST)
+    if request.user.is_authenticated & request.user.is_admin==True:
+        if(request.method=="POST"):
+            print(request.POST)
+            form=CategoryForm(request.POST)
 
-        if form.is_valid():
-            print("valid")
-            form.save()
+            if form.is_valid():
+                print("valid")
+                form.save()
+            else:
+                print("invalid")
+
+            return redirect('/admin_category/')
         else:
-            print("invalid")
-
-        return redirect('/admin_category/')
-    else:
-        return render(request,'app/category_add.html')
+            return render(request,'app/category_add.html')
+    return render(request,'app/404.html')
 def admin_order_edit(request,order_id):
     order=Order.objects.get(id=order_id)
     user=Account.objects.all()
     product=Product.objects.all()
-    
-    if(request.method=="POST"):
-        print(request.POST)
-        form=OrderForm(request.POST,instance=order)
+    if request.user.is_authenticated & request.user.is_admin==True:
+        if(request.method=="POST"):
+            print(request.POST)
+            form=OrderForm(request.POST,instance=order)
 
-        if form.is_valid():
-            print("valid")
-            form.save()
+            if form.is_valid():
+                print("valid")
+                form.save()
+            else:
+                print("invalid")
+
+            return redirect('/admin_order/')
         else:
-            print("invalid")
-
-        return redirect('/admin_order/')
-    else:
-        return render(request,'app/order_edit.html',{'order':order,'user':user,'product':product})
+            return render(request,'app/order_edit.html',{'order':order,'user':user,'product':product})
+    return render(request,'app/404.html')
 def admin_order_add(request):
     user=Account.objects.all()
     product=Product.objects.all()
-    
-    if(request.method=="POST"):
-        print(request.POST)
-        form=OrderForm(request.POST)
+    if request.user.is_authenticated & request.user.is_admin==True:
+        if(request.method=="POST"):
+            print(request.POST)
+            form=OrderForm(request.POST)
 
-        if form.is_valid():
-            print("valid")
-            form.save()
+            if form.is_valid():
+                print("valid")
+                form.save()
+            else:
+                print("invalid")
+
+            return redirect('/admin_order/')
         else:
-            print("invalid")
-
-        return redirect('/admin_order/')
-    else:
-        return render(request,'app/order_add.html',{'order':order,'user':user,'product':product})
+            return render(request,'app/order_add.html',{'order':order,'user':user,'product':product})
+    return render(request,'app/404.html')
 def admin_product_edit(request,product_id):
     product=Product.objects.get(id=product_id)
     category=Category.objects.all()
-    
-    if(request.method=="POST"):
-        print(request.POST)
+    if request.user.is_authenticated & request.user.is_admin==True:
+        if(request.method=="POST"):
+            print(request.POST)
         
-        form=ProductForm(request.POST,instance=product)
+            form=ProductForm(request.POST,request.FILES,instance=product)
 
-        if form.is_valid():
-            print("valid")
-            form.save()
+            if form.is_valid():
+                print("valid")
+                form.save()
+            else:
+                print("invalid")
+
+            return redirect('/admin_product/')
         else:
-            print("invalid")
-
-        return redirect('/admin_product/')
-    else:
-        return render(request,'app/product_edit.html',{'category':category,'product':product})
+            return render(request,'app/product_edit.html',{'category':category,'product':product})
+    return render(request,'app/404.html')
 def admin_product_add(request):
     category=Category.objects.all()
-    
-    if(request.method=="POST"):
-        print(request.POST)
+    if request.user.is_authenticated & request.user.is_admin==True:
+        if(request.method=="POST"):
+            print(request.POST)
         
-        form=ProductForm(request.POST)
+            form=ProductForm(request.POST,request.FILES)
 
-        if form.is_valid():
-            print("valid")
-            form.save()
+            if form.is_valid():
+                print("valid")
+                form.save()
+            else:
+                print("invalid")
+
+            return redirect('/admin_product/')
         else:
-            print("invalid")
-
-        return redirect('/admin_product/')
-    else:
-        return render(request,'app/product_add.html',{'category':category})
+            return render(request,'app/product_add.html',{'category':category})
+    return render(request,'app/404.html')
     
 def admin_product(request):
-    product=Product.objects.all()
-    return render(request,'app/admin_product.html',{'product':product})
+    if request.user.is_authenticated & request.user.is_admin==True:
+        product=Product.objects.all()
+        return render(request,'app/admin_product.html',{'product':product})
+    return render(request,'app/404.html')
 def admin_category(request):
-    category=Category.objects.all()
-    return render(request,'app/admin_category.html',{'category':category})
+    if request.user.is_authenticated & request.user.is_admin==True:
+        category=Category.objects.all()
+        return render(request,'app/admin_category.html',{'category':category})
+    return render(request,'app/404.html')
 def admin_order(request):
-    order=Order.objects.all()
-    return render(request,'app/admin_order.html',{'order':order})
+    if request.user.is_authenticated & request.user.is_admin==True:
+        order=Order.objects.all()
+        return render(request,'app/admin_order.html',{'order':order})
+    return render(request,'app/404.html')
 def admin_cart_delete(request,cart_id):
-    cart=Cart.objects.get(id=cart_id)
-    cart.delete()
-    return redirect('/admin_cart/')
+    if request.user.is_authenticated & request.user.is_admin==True:
+        cart=Cart.objects.get(id=cart_id)
+        cart.delete()
+        return redirect('/admin_cart/')
+    return render(request,'app/404.html')
 def admin_category_delete(request,category_id):
-    category=Category.objects.get(id=category_id)
-    category.delete()
-    return redirect('/admin_category/')
+    if request.user.is_authenticated & request.user.is_admin==True:
+        category=Category.objects.get(id=category_id)
+        category.delete()
+        return redirect('/admin_category/')
+    return render(request,'app/404.html')
 def admin_order_delete(request,order_id):
-    order=Order.objects.get(id=order_id)
-    order.delete()
-    return redirect('/admin_order/')
+    if request.user.is_authenticated & request.user.is_admin==True:
+        order=Order.objects.get(id=order_id)
+        order.delete()
+        return redirect('/admin_order/')
+    return render(request,'app/404.html')
 def admin_product_delete(request,product_id):
-    product=Product.objects.get(id=product_id)
-    product.delete()
-    return redirect('/admin_product/')
+    if request.user.is_authenticated & request.user.is_admin==True:
+        product=Product.objects.get(id=product_id)
+        product.delete()
+        return redirect('/admin_product/')
+    return render(request,'app/404.html')
 def productview(request,myid):
     if request.user.is_authenticated:
         products=Product.objects.filter(id=myid)
@@ -292,8 +318,11 @@ def remove_cart(request):
             'totalamount':amount + shipping_amount
             }
         return JsonResponse(data)
-def buy_now(request):
- return render(request, 'app/buynow.html')
+def buy_now(request,buy_id):
+    product=Product.objects.filter(id=buy_id)
+    add=request.user
+    print(add)
+    return render(request, 'app/buynow.html',{"product":product,"add":add})
 
 def profile(request):
  return render(request, 'app/profile.html')
@@ -366,3 +395,8 @@ def checkout(request):
             amount+=tempamount
         total_amount=amount+shipping_amount
     return render(request,'app/checkout.html',{'cart_items':cart_items, 'add':add,'total_amount':total_amount})
+def search(request):
+    q=request.GET['q']
+    products=Product.objects.filter(name__icontains=q).order_by('-id')
+    context={'products':products}
+    return render(request,'app/search.html/',context)
