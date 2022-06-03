@@ -132,12 +132,12 @@ def admin_order_add(request):
 def admin_product_edit(request,product_id):
     product=Product.objects.get(id=product_id)
     category=Category.objects.all()
-    if request.user.is_authenticated & request.user.is_admin==True:
+    if request.user.is_authenticated:
         if(request.method=="POST"):
             print(request.POST)
         
             form=ProductForm(request.POST,request.FILES,instance=product)
-
+            print(form)
             if form.is_valid():
                 print("valid")
                 form.save()
@@ -150,7 +150,7 @@ def admin_product_edit(request,product_id):
     return render(request,'app/404.html')
 def admin_product_add(request):
     category=Category.objects.all()
-    if request.user.is_authenticated & request.user.is_admin==True:
+    if request.user.is_authenticated :
         if(request.method=="POST"):
             print(request.POST)
         
@@ -168,7 +168,7 @@ def admin_product_add(request):
     return render(request,'app/404.html')
     
 def admin_product(request):
-    if request.user.is_authenticated & request.user.is_admin==True:
+    if request.user.is_authenticated :
         product=Product.objects.all()
         return render(request,'app/admin_product.html',{'product':product})
     return render(request,'app/404.html')
